@@ -9,7 +9,9 @@
     <projectFile profileName="IIS Express">../FoodRocket.Services.Tornado/src/FoodRocket.Services.Tornado.Api/FoodRocket.Services.Tornado.Api.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd7cd1e7-2ebc-4e6b-95f1-649a97048ed1" name="Changes" comment="" />
+    <list default="true" id="fd7cd1e7-2ebc-4e6b-95f1-649a97048ed1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.FoodRocket/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FoodRocket/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -137,7 +139,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1669569538123</updated>
-      <workItem from="1669569546698" duration="956000" />
+      <workItem from="1669569546698" duration="2130000" />
     </task>
     <servers />
   </component>
