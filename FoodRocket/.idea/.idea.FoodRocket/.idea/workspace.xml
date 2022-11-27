@@ -9,19 +9,7 @@
     <projectFile profileName="IIS Express">../FoodRocket.Services.Tornado/src/FoodRocket.Services.Tornado.Api/FoodRocket.Services.Tornado.Api.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd7cd1e7-2ebc-4e6b-95f1-649a97048ed1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../FoodRocket.Services.Identity/.idea/.idea.FoodRocket.Services.Identity/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../FoodRocket.Services.Inventory/.idea/.idea.FoodRocket.Services.Inventory/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../FoodRocket.Services.Inventory/.idea/.idea.FoodRocket.Services.Inventory/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../FoodRocket.Services.Inventory/.idea/.idea.FoodRocket.Services.Inventory/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../FoodRocket.Services.Tornado/.idea/.idea.FoodRocket.Services.Tornado/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../FoodRocket.Services.Tornado/.idea/.idea.FoodRocket.Services.Tornado/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../FoodRocket.Services.Tornado/.idea/.idea.FoodRocket.Services.Tornado/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../FoodRocket.Services.Tornado/.idea/.idea.FoodRocket.Services.Tornado/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.FoodRocket/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.FoodRocket/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodRocket.sln" beforeDir="false" afterPath="$PROJECT_DIR$/FoodRocket.sln" afterDir="false" />
-    </list>
+    <list default="true" id="fd7cd1e7-2ebc-4e6b-95f1-649a97048ed1" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -149,7 +137,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1669569538123</updated>
-      <workItem from="1669569546698" duration="626000" />
+      <workItem from="1669569546698" duration="956000" />
     </task>
     <servers />
   </component>
