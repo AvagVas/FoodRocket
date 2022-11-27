@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="Convey" Version="1.0.541" />
+        <PackageReference Include="Convey.CQRS.Commands" Version="1.0.541" />
+        <PackageReference Include="Convey.CQRS.Events" Version="1.0.541" />
+        <PackageReference Include="Convey.CQRS.Queries" Version="1.0.541" />
+        <PackageReference Include="Convey.MessageBrokers" Version="1.0.541" />
+        <PackageReference Include="Convey.WebApi" Version="1.0.541" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.0.3" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Events\Customers\Rejected" />
+      <Folder Include="Events\Inventory\Rejected" />
+      <Folder Include="Tests" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\FoodRocket.Services.Inventory.Core\FoodRocket.Services.Inventory.Core.csproj" />
+    </ItemGroup>
+
+</Project>

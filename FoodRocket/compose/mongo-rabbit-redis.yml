@@ -1,0 +1,48 @@
+version: "3.7"
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    networks:
+      - food_rocket
+    volumes:
+      - mongo:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - food_rocket
+    # volumes: 
+    #   - rabbitmq:/var/lib/rabbitmq
+
+  redis:
+    image: redis
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+    networks:
+      - food_rocket
+    volumes: 
+      - redis:/data
+
+networks:
+  food_rocket:
+    name: food_rocket-network
+
+volumes:
+  mongo:
+    driver: local
+  # rabbitmq:
+  #   driver: local
+  redis:
+    driver: local

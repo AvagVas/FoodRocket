@@ -1,0 +1,14 @@
+﻿{
+  "profiles": {
+    "FoodRocket.Services.Inventory.Api": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5134;https://localhost:7059",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "local"
+      }
+    }
+  }
+}

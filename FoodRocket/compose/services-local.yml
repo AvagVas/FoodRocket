@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  api-gateway:
+    build: ../../foodrocket.apiGateway
+    container_name: api-gateway
+    restart: unless-stopped
+    environment:
+    ports:
+      - 5000:80
+    networks:
+      - food_rocket
+
+
+  identity-service:
+    build: ../../food_rocket.services.identity
+    container_name: identity-service
+    restart: unless-stopped
+    ports:
+      - 5001:80 
+    networks:
+      - food_rocket
+
+networks:
+  food_rocket:
+    name: food_rocket-network
+    external: true

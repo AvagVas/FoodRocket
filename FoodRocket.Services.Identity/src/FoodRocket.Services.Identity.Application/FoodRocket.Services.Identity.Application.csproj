@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="Convey" Version="1.0.541" />
+        <PackageReference Include="Convey.CQRS.Commands" Version="1.0.541" />
+        <PackageReference Include="Convey.CQRS.Events" Version="1.0.541" />
+        <PackageReference Include="Convey.CQRS.Queries" Version="1.0.541" />
+        <PackageReference Include="Convey.MessageBrokers" Version="1.0.541" />
+        <PackageReference Include="IdGen" Version="3.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\FoodRocket.Services.Identity.Core\FoodRocket.Services.Identity.Core.csproj" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Folder Include="Commands" />
+      <Folder Include="DTO" />
+      <Folder Include="Events" />
+      <Folder Include="Queries" />
+      <Folder Include="Services" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Reference Include="Convey.WebApi">
+        <HintPath>..\..\..\..\..\..\.nuget\packages\convey.webapi\1.0.541\lib\net6.0\Convey.WebApi.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+</Project>

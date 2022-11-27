@@ -1,0 +1,22 @@
+openssl req -x509 -newkey rsa:4096 -days 365 -keyout ca-key.key -out ca-cert.pem
+
+openssl x509 -in ca-cert.pem -noout -text
+
+openssl req -newkey rsa:4096 -keyout server-key.key -out server-req.csr
+
+
+openssl req -newkey rsa:4096 -keyout server-key.key -out server-req.csr -subj
+"/C=AM/ST=yerevan/L=yerevan/O=server=OU=*.altairwealt.com/OU=server/CN=*.altairwealth.com/email=altairwealth@mailinator.com"
+
+openssl x509 -req -days 365 -in server-req.csr -CA ca-cert.pem -CAkey ca-key.key -CAcreateserial -out server-signed-cert.pem
+
+openssl x509 -in server-signed-cert.pem -noout -text
+
+
+// convert pem to pfx
+openssl pkcs12 -inkey server-key.key -in localhost.pem -export -out localhost.pfx
+
+
+
+another source
+https://pleasantpasswords.com/info/pleasant-password-server/b-server-configuration/3-installing-a-3rd-party-certificate/openssl-commands

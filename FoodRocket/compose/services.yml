@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+  api-gateway:
+    image: foodrocket/foodrocket.apigateway
+    container_name: api-gateway
+    restart: unless-stopped
+    environment:
+    ports:
+      - 5000:80
+    networks:
+      - food_rocket
+
+  trunk-service:
+    image: altair/altair.services.trunk
+    container_name: trunk-service
+    restart: unless-stopped
+    ports:
+      - 5001:80 
+    networks:
+      - food_rocket
+  identity-service:
+    image: altair/altair.services.identity
+    container_name: identity-service
+    restart: unless-stopped
+    ports:
+      - 5001:80 
+    networks:
+      - food_rocket
+
+networks:
+  food_rocket:
+    name: food_rocket-network
+    external: true

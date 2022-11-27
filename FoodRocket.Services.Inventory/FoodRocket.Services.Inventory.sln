@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2D792A91-1DB4-41AE-9ACD-FF52B0731D9B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{23284C04-ED30-4E08-B9DE-A0BEF1FC45D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodRocket.Services.Inventory.Core", "src\FoodRocket.Services.Inventory.Core\FoodRocket.Services.Inventory.Core.csproj", "{65905C93-74FA-4A74-AB16-A581A0577B66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodRocket.Services.Inventory.Application", "src\FoodRocket.Services.Inventory.Application\FoodRocket.Services.Inventory.Application.csproj", "{A3F7CEC4-BF59-4313-90BF-B324502FCD41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodRocket.Services.Inventory.Infrastructure", "src\FoodRocket.Services.Inventory.Infrastructure\FoodRocket.Services.Inventory.Infrastructure.csproj", "{3764B639-7D7F-4D9D-9913-B4BDD0C032A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodRocket.Services.Inventory.Api", "src\FoodRocket.Services.Inventory.Api\FoodRocket.Services.Inventory.Api.csproj", "{6BBFAF91-7087-404A-B6BA-94A255A733BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodRocket.DBContext", "src\FoodRocket.DBContext\FoodRocket.DBContext.csproj", "{FC06E4E8-C45F-4B79-8E67-9392473BC34F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{65905C93-74FA-4A74-AB16-A581A0577B66} = {2D792A91-1DB4-41AE-9ACD-FF52B0731D9B}
+		{A3F7CEC4-BF59-4313-90BF-B324502FCD41} = {2D792A91-1DB4-41AE-9ACD-FF52B0731D9B}
+		{3764B639-7D7F-4D9D-9913-B4BDD0C032A9} = {2D792A91-1DB4-41AE-9ACD-FF52B0731D9B}
+		{6BBFAF91-7087-404A-B6BA-94A255A733BE} = {2D792A91-1DB4-41AE-9ACD-FF52B0731D9B}
+		{FC06E4E8-C45F-4B79-8E67-9392473BC34F} = {2D792A91-1DB4-41AE-9ACD-FF52B0731D9B}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{65905C93-74FA-4A74-AB16-A581A0577B66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65905C93-74FA-4A74-AB16-A581A0577B66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65905C93-74FA-4A74-AB16-A581A0577B66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65905C93-74FA-4A74-AB16-A581A0577B66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3F7CEC4-BF59-4313-90BF-B324502FCD41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3F7CEC4-BF59-4313-90BF-B324502FCD41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3F7CEC4-BF59-4313-90BF-B324502FCD41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3F7CEC4-BF59-4313-90BF-B324502FCD41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3764B639-7D7F-4D9D-9913-B4BDD0C032A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3764B639-7D7F-4D9D-9913-B4BDD0C032A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3764B639-7D7F-4D9D-9913-B4BDD0C032A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3764B639-7D7F-4D9D-9913-B4BDD0C032A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BBFAF91-7087-404A-B6BA-94A255A733BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BBFAF91-7087-404A-B6BA-94A255A733BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BBFAF91-7087-404A-B6BA-94A255A733BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BBFAF91-7087-404A-B6BA-94A255A733BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC06E4E8-C45F-4B79-8E67-9392473BC34F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC06E4E8-C45F-4B79-8E67-9392473BC34F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC06E4E8-C45F-4B79-8E67-9392473BC34F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC06E4E8-C45F-4B79-8E67-9392473BC34F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

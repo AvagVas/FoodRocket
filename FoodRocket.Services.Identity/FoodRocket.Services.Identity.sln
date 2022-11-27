@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F1328966-C500-4E0C-AA4D-F252C78B0F65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodRocket.Services.Identity.Core", "src\FoodRocket.Services.Identity.Core\FoodRocket.Services.Identity.Core.csproj", "{CF733663-C1A0-42E3-B105-EAA79E778E4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodRocket.Services.Identity.Application", "src\FoodRocket.Services.Identity.Application\FoodRocket.Services.Identity.Application.csproj", "{7EAD6BF2-0D17-4FF0-98B8-F040877A0D38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodRocket.Services.Identity.Infrastructure", "src\FoodRocket.Services.Identity.Infrastructure\FoodRocket.Services.Identity.Infrastructure.csproj", "{E06EF4D7-8365-495F-A937-8CD42136D66D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodRocket.Services.Identity.Api", "src\FoodRocket.Services.Identity.Api\FoodRocket.Services.Identity.Api.csproj", "{5B0FB4EE-E44E-4F47-9584-9503A5B30F08}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CF733663-C1A0-42E3-B105-EAA79E778E4C} = {F1328966-C500-4E0C-AA4D-F252C78B0F65}
+		{7EAD6BF2-0D17-4FF0-98B8-F040877A0D38} = {F1328966-C500-4E0C-AA4D-F252C78B0F65}
+		{E06EF4D7-8365-495F-A937-8CD42136D66D} = {F1328966-C500-4E0C-AA4D-F252C78B0F65}
+		{5B0FB4EE-E44E-4F47-9584-9503A5B30F08} = {F1328966-C500-4E0C-AA4D-F252C78B0F65}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF733663-C1A0-42E3-B105-EAA79E778E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF733663-C1A0-42E3-B105-EAA79E778E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF733663-C1A0-42E3-B105-EAA79E778E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF733663-C1A0-42E3-B105-EAA79E778E4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EAD6BF2-0D17-4FF0-98B8-F040877A0D38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EAD6BF2-0D17-4FF0-98B8-F040877A0D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EAD6BF2-0D17-4FF0-98B8-F040877A0D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EAD6BF2-0D17-4FF0-98B8-F040877A0D38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E06EF4D7-8365-495F-A937-8CD42136D66D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E06EF4D7-8365-495F-A937-8CD42136D66D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E06EF4D7-8365-495F-A937-8CD42136D66D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E06EF4D7-8365-495F-A937-8CD42136D66D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B0FB4EE-E44E-4F47-9584-9503A5B30F08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B0FB4EE-E44E-4F47-9584-9503A5B30F08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B0FB4EE-E44E-4F47-9584-9503A5B30F08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B0FB4EE-E44E-4F47-9584-9503A5B30F08}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

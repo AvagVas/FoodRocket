@@ -1,0 +1,215 @@
+version: "3.7"
+
+services:
+  sqlserver:
+    build:
+      context: ./sqlServer
+      dockerfile: dockerfile
+    ports:
+      - "15789:1433"
+    env_file:
+      - sqlserver.env
+    volumes:
+      - sqlsystem:/var/opt/mssql/
+      - sqldata:/var/opt/sqlserver/data
+      - sqllog:/var/opt/sqlserver/log
+      - sqlbackup: /var/opt/sqlserver/backup
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_Role: root
+      POSTGRES_USER: $postuser
+      POSTGRES_PASSWORD: $postpass
+      POSTGRES_DB: $postdatabase
+    restart: always
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $postuser" ]
+      interval: 2s
+      timeout: 2s
+      retries: 5
+  consul:
+    image: consul
+    container_name: consul
+    restart: unless-stopped
+    networks:
+      - food_rocket
+    ports:
+      - 8500:8500
+    # volumes:
+    #   - consul:/consul/data
+
+  fabio:
+    image: fabiolb/fabio
+    container_name: fabio
+    restart: unless-stopped
+    environment:
+      - FABIO_REGISTRY_CONSUL_ADDR=consul:8500
+    networks:
+      - food_rocket
+    ports:
+      - 9998:9998
+      - 9999:9999
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    networks:
+      - food_rocket
+    ports:
+      - 3000:3000
+    # volumes:
+    #   - grafana:/var/lib/grafana
+
+  jaeger:
+    image: jaegertracing/all-in-one
+    container_name: jaeger
+    restart: unless-stopped
+    networks:
+      - food_rocket
+    ports:
+      - 5775:5775/udp
+      - 5778:5778
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 9411:9411
+      - 14268:14268
+      - 16686:16686
+
+  mongo1:
+    container_name: mongo1
+    image: mongo:4.4
+    volumes:
+      - ~/mongors/data1:/data/db
+      - ./rs-init.sh:/scripts/rs-init.sh
+    networks:
+      - food_rocket
+    ports:
+      - 27021:27017
+    environment:
+      - MONGO_INITDB_DATABASE=test
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - ROOT_USERNAME=admin
+      - ROOT_PASSWORD=admin
+    links:
+      - mongo2
+      - mongo3
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+  mongo2:
+    container_name: mongo2
+    image: mongo:4.4
+    volumes:
+      - ~/mongors/data2:/data/db
+    networks:
+      - food_rocket
+    ports:
+      - 27022:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+  mongo3:
+    container_name: mongo3
+    image: mongo:4.4
+    volumes:
+      - ~/mongors/data3:/data/db
+    networks:
+      - food_rocket
+    ports:
+      - 27023:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+
+  prometheus:
+    build: ./prometheus
+    container_name: prometheus
+    restart: unless-stopped
+    networks:
+      - food_rocket
+    ports:
+      - 9090:9090
+    # volumes:
+    #   - prometheus:/prometheus
+
+  rabbitmq:
+    build: ./rabbitmq
+    container_name: rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbit
+      RABBITMQ_DEFAULT_PASS: zxcvbnm
+    networks:
+      - food_rocket
+    ports:
+      - 15672:15672
+      - 5672:5672
+      - 15692:15692
+    healthcheck:
+      test: "rabbitmq-diagnostics -q status"
+      interval: 2s
+      timeout: 2s
+      retries: 5
+
+  redis:
+    image: redis
+    container_name: redis
+    restart: unless-stopped
+    networks:
+      - food_rocket
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/data
+
+  seq:
+    image: datalust/seq
+    container_name: seq
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+    networks:
+      - food_rocket
+    ports:
+      - 5341:80
+    # volumes:
+    #   - seq:/data
+
+  vault:
+    image: vault
+    container_name: vault
+    restart: unless-stopped
+    environment:
+      - VAULT_ADDR=http://127.0.0.1:8200
+      - VAULT_DEV_ROOT_TOKEN_ID=secret
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - food_rocket
+    ports:
+      - 8200:8200
+
+networks:
+  food_rocket:
+    name: food_rocket-network
+
+volumes:
+  # consul:
+  #   driver: local
+  # grafana:
+  #   driver: local
+  mongo:
+    driver: local
+  # prometheus:
+  #   driver: local
+  # rabbitmq:
+  #   driver: local
+  redis:
+    driver: local
+  # seq:
+  #   driver: local
+  sqlsystem:
+  sqldata:
+  sqllog:
+  sqlbackup:

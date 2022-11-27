@@ -1,0 +1,19 @@
+------Kill all containers, remove all containers, remove all images, remove all volumes----------
+docker kill $(docker ps -q)
+docker rm $(docker ps -a -q)
+docker rmi $(docker images -q)
+docker system prune -a --volumes
+----------------
+
+----sql server----
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=d0_n0t_be_l@zy_h3r3" --name=sqlserver -e "MSSQL_PID=Express" -v sqlvolume:/var/opt/mssql -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+docker network connect simple-network sqlserver
+docker network inspect simple-network
+
+
+sqlvolume:/var/opt/mssql
+-----------
+
+-----exec------
+docker exec -it <containerId> bash
+--------------
