@@ -26,6 +26,10 @@ namespace FoodRocket.Services.Inventory.Application.Events.Customers.External.Ha
 
         public async Task HandleAsync(SignedUp @event, CancellationToken cancellationToken = new CancellationToken())
         {
+            if (@event == null) throw new ArgumentNullException(nameof(@event));
+            if (string.IsNullOrWhiteSpace(@event.FirstName)) throw new ArgumentNullException(nameof(@event.FirstName));
+            if (string.IsNullOrWhiteSpace(@event.LastName)) throw new ArgumentNullException(nameof(@event.LastName));
+
             if (@event.UserType != "customer")
             {
                 return;
@@ -33,6 +37,7 @@ namespace FoodRocket.Services.Inventory.Application.Events.Customers.External.Ha
 
             Customer customer = Customer.Create(_idGenerator.GetNewIdFor("customer"), @event.FirstName, @event.LastName,
                 true);
+
             await _customerRepository.AddAsync(customer);
         }
     }

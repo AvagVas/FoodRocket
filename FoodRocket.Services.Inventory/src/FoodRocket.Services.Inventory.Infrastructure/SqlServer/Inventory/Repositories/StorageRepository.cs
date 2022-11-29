@@ -8,39 +8,46 @@ namespace FoodRocket.Services.Inventory.Infrastructure.SqlServer.Inventory.Repos
 public class StorageRepository : IStorageRepository
 {
     private readonly InventoryDbContext _inventoryContexts;
+    private readonly InventoryDbContext _dbContext;
 
-    public StorageRepository(InventoryDbContext inventoryContexts)
+    public StorageRepository(InventoryDbContext inventoryContexts, InventoryDbContext dbContext)
     {
         _inventoryContexts = inventoryContexts;
+        _dbContext = dbContext;
     }
-    public Task<Storage?> GetAsync(long id)
+    public async Task<Storage?> GetAsync(long id)
     {
-        throw new NotImplementedException();
+        var storageDb = await _dbContext.Storages.FirstOrDefaultAsync(s => s.StorageId == id);
+        return storageDb?.AsEntity();
     }
 
     public async Task<bool> ExistsAsync(long id)
     {
-        var test = await _inventoryContexts.Products.FirstOrDefaultAsync();
-        throw new NotImplementedException();
+        return await _dbContext.Storages.AnyAsync(s => s.StorageId == id);
     }
 
-    public Task<bool> ExistsAsync(string storageName)
+    public async Task<bool> ExistsAsync(string storageName)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Storages.AnyAsync(s => s.Name == storageName);
     }
 
-    public Task AddAsync(Storage product)
+    public async Task AddAsync(Storage storage)
     {
-        throw new NotImplementedException();
+        DBContext.Models.Inventory.Storage storageDb = storage.AsDbModel();
+        _dbContext.Storages.Add(storageDb);
+        await _dbContext.SaveChangesAsync();
     }
 
-    public Task UpdateAsync(Storage product)
+    public async Task UpdateAsync(Storage storage)
     {
-        throw new NotImplementedException();
+        DBContext.Models.Inventory.Storage storageDb = storage.AsDbModel();
+        _dbContext.Storages.Update(storageDb);
+        await _dbContext.SaveChangesAsync();
     }
 
-    public Task DeleteAsync(long id)
+    public async Task DeleteAsync(long id)
     {
-        throw new NotImplementedException();
+        DBContext.Models.Inventory.Storage storageDb = new DBContext.Models.Inventory.Storage() { StorageId = id };
+        await _dbContext.SaveChangesAsync();
     }
 }

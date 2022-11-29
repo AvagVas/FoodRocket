@@ -17,7 +17,7 @@ internal class AppContext : IAppContext
     {
     }
     internal AppContext(Microsoft.AspNetCore.Http.HttpContext context) : this(Guid.NewGuid().ToString("N"),
-        context.User.Identity.IsAuthenticated ? new IdentityContext(context) : IdentityContext.Empty)
+        context.User.Identity!.IsAuthenticated ? new IdentityContext(context) : IdentityContext.Empty)
     {
     }
     internal AppContext(string requestId, IIdentityContext identity)

@@ -9,7 +9,7 @@ public class IDGeneratorConfigurationOptions
     
     public GeneratorEpoch? Epoch { get; set; }
     
-    public IEnumerable<Generator> Generators { get; set; }
+    public IEnumerable<Generator>? Generators { get; set; }
     public class IDStructureBits
     {
         public byte TimestampBits { get; set; }

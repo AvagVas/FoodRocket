@@ -132,7 +132,7 @@ public class CustomerRepository : ICustomerRepository
         } 
         else
         {
-            if (originalCustomer.Addresses?.Any() ?? false)
+            if (originalCustomer!.Addresses?.Any() ?? false)
             {
                 foreach (var address in originalCustomer.Addresses)
                 {

@@ -3,9 +3,9 @@ namespace FoodRocket.DBContext.Services.SettingOptions;
 public class IDGeneratorConfigurationOptions
 {
     public bool Enabled { get; set; }
-    public IDStructureBits? StructureBits { get; set; }
+    public IDStructureBits StructureBits { get; set; }
 
-    public GeneratorEpoch? Epoch { get; set; }
+    public GeneratorEpoch Epoch { get; set; }
 
     public IEnumerable<Generator> Generators { get; set; }
 

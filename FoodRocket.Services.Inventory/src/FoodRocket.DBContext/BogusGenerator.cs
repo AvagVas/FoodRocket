@@ -254,7 +254,7 @@ public class BogusGenerator
             gram = new UnitOfMeasure()
             {
                 UnitOfMeasureId = _idGenerator.GetNewIdFor("uom"), Name = "Gram", IsBase = false, Ratio = 1000,
-                IsFractional = true, BaseOfUnitOfMId = kg.BaseOfUnitOfMId, Type = TypeOfUnitOfMeasure.Weight
+                IsFractional = true, BaseOfUnitOfMId = kg.UnitOfMeasureId, Type = TypeOfUnitOfMeasure.Weight
             }
         };
 
@@ -268,7 +268,7 @@ public class BogusGenerator
 
             box100 = new UnitOfMeasure()
             {
-                UnitOfMeasureId = _idGenerator.GetNewIdFor("uom"), Name = "Box100", IsBase = true, Ratio = 100,
+                UnitOfMeasureId = _idGenerator.GetNewIdFor("uom"), Name = "Box100", IsBase = false, Ratio = 100,
                 IsFractional = false, BaseOfUnitOfMId = item.UnitOfMeasureId, Type = TypeOfUnitOfMeasure.Piece
             }
         };

@@ -88,7 +88,7 @@ public class Customer : AggregateRoot
     public void SetContactAsPrimary(Contact contact)
     {
         PrimaryContact = contact;
-        var prevPrimaryContact = Contacts.FirstOrDefault(contact => contact.IsPrimary);
+        var prevPrimaryContact = Contacts.FirstOrDefault(c => c.IsPrimary);
         if (prevPrimaryContact is {} && prevPrimaryContact.Id != contact.Id)
         {
             prevPrimaryContact.ChangePrimaryStatus(false);
@@ -112,8 +112,8 @@ public class Customer : AggregateRoot
         AddEvent(new CustomerDeleted(this));
     }
 
-    private static void ValidateCustomer(string firstName, string lastName, bool isActive, Address mainBillingAddress,
-        Address mainShippingAddress)
+    private static void ValidateCustomer(string firstName, string lastName, bool isActive, Address? mainBillingAddress,
+        Address? mainShippingAddress)
     {
         if (string.IsNullOrWhiteSpace(firstName))
         {

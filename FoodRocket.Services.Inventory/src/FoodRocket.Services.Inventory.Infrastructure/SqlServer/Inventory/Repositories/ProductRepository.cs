@@ -1,39 +1,57 @@
+using FoodRocket.DBContext.Contexts;
 using FoodRocket.Services.Inventory.Core.Entities;
 using FoodRocket.Services.Inventory.Core.Entities.Inventory;
 using FoodRocket.Services.Inventory.Core.Repositories;
 using FoodRocket.Services.Inventory.Core.ValueObjects;
+using Microsoft.EntityFrameworkCore;
+using Storage = FoodRocket.DBContext.Models.Inventory.Storage;
 
 namespace FoodRocket.Services.Inventory.Infrastructure.SqlServer.Inventory.Repositories;
 
 public class ProductRepository : IProductRepository
 {
-    public Task<Product?> GetAsync(AggregateId id)
+    private readonly InventoryDbContext _dbContext;
+
+    public ProductRepository(InventoryDbContext dbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = dbContext;
     }
 
-    public Task<bool> ExistsAsync(AggregateId id)
+    public async Task<Product?> GetAsync(AggregateId id)
     {
-        throw new NotImplementedException();
+        var productDb = await _dbContext.Products.FirstOrDefaultAsync(p => p.ProductId == id);
+        var baseUnitsOfMeasureDb = await _dbContext.UnitOfMeasures.Where(uomDb => uomDb.IsBase).ToListAsync();
+        return productDb?.AsEntity(baseUnitsOfMeasureDb);
     }
 
-    public Task<bool> ExistsAsync(ProductName name)
+    public async Task<bool> ExistsAsync(AggregateId id)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Products.AnyAsync(p => p.ProductId == id);
     }
 
-    public Task AddAsync(Product product)
+    public async Task<bool> ExistsAsync(ProductName name)
     {
-        throw new NotImplementedException();
+        return await _dbContext.Products.AnyAsync(p => p.Name == name);
     }
 
-    public Task UpdateAsync(Product product)
+    public async Task AddAsync(Product product)
     {
-        throw new NotImplementedException();
+        var productDb = product.AsDbModel();
+        _dbContext.Products.Add(productDb);
+        await _dbContext.SaveChangesAsync();
     }
 
-    public Task DeleteAsync(AggregateId id)
+    public async Task UpdateAsync(Product product)
     {
-        throw new NotImplementedException();
+        var productDb = product.AsDbModel();
+        _dbContext.Products.Update(productDb);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(AggregateId id)
+    {
+        DBContext.Models.Inventory.Product productDb = new DBContext.Models.Inventory.Product() { ProductId = id };
+        _dbContext.Remove(productDb);
+        
     }
 }

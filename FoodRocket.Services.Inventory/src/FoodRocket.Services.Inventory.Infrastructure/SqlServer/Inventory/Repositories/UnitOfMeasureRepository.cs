@@ -1,42 +1,67 @@
+using FoodRocket.DBContext.Contexts;
 using FoodRocket.Services.Inventory.Core.Entities.Inventory;
 using FoodRocket.Services.Inventory.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoodRocket.Services.Inventory.Infrastructure.SqlServer.Inventory.Repositories;
 
 public class UnitOfMeasureRepository : IUnitOfMeasureRepository
 {
-    public Task<UnitOfMeasure?> GetAsync(long id)
+    private readonly InventoryDbContext _dbContext;
+
+    public UnitOfMeasureRepository(InventoryDbContext dbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = dbContext;
     }
 
-    public Task<IEnumerable<UnitOfMeasure>> GetListByIdsAsync(IEnumerable<long> ids)
+    public async Task<UnitOfMeasure?> GetAsync(long id)
     {
-        throw new NotImplementedException();
+        var unitOfMeasureDb = await _dbContext.UnitOfMeasures.FirstOrDefaultAsync(uomDb => uomDb.UnitOfMeasureId == id);
+        var baseUnitsOfMeasureDb = await _dbContext.UnitOfMeasures.Where(uomDb => uomDb.IsBase).ToListAsync();
+        return unitOfMeasureDb?.AsEntity(baseUnitsOfMeasureDb);
     }
 
-    public Task<bool> ExistsByNameOrIdAsync(string name, long id)
+    public async Task<List<UnitOfMeasure>> GetListByIdsAsync(IEnumerable<long> ids)
     {
-        throw new NotImplementedException();
+        var unitOfMeasureDbs = await _dbContext.UnitOfMeasures.Where(uomDb => ids.Contains(uomDb.UnitOfMeasureId))
+            .ToListAsync();
+        var baseUnitsOfMeasureDb = await _dbContext.UnitOfMeasures.Where(uomDb => uomDb.IsBase).ToListAsync();
+        return unitOfMeasureDbs.AsEntity(baseUnitsOfMeasureDb);
     }
 
-    public Task<bool> ExistsAsync(long id)
+    public async Task<bool> ExistsByNameOrIdAsync(string name, long id)
     {
-        throw new NotImplementedException();
+        return await _dbContext.UnitOfMeasures.AnyAsync(uomDb => uomDb.Name == name  || uomDb.UnitOfMeasureId == id);
     }
 
-    public Task<bool> ExistsAsync(IEnumerable<long> id)
+    public async Task<bool> ExistsAsync(long id)
     {
-        throw new NotImplementedException();
+        return await _dbContext.UnitOfMeasures.AnyAsync(uomDb => uomDb.UnitOfMeasureId == id);
     }
 
-    public Task AddAsync(UnitOfMeasure unitOfMeasure)
+    public async Task<bool> ExistsAsync(IEnumerable<long> ids)
     {
-        throw new NotImplementedException();
+        return await _dbContext.UnitOfMeasures.AnyAsync(uomDb => ids.Contains(uomDb.UnitOfMeasureId));
     }
 
-    public Task DeleteAsync(long id)
+    public async Task AddAsync(UnitOfMeasure unitOfMeasure)
     {
-        throw new NotImplementedException();
+        var uomDb = unitOfMeasure.AsDbModel();
+
+        var baseUomDb = unitOfMeasure.BaseOfUnitOfM?.AsDbModel();
+        if (baseUomDb is {} && !await _dbContext.UnitOfMeasures.AnyAsync(uom => uom.UnitOfMeasureId == baseUomDb.UnitOfMeasureId))
+        {
+            _dbContext.UnitOfMeasures.Add(baseUomDb);
+        }
+
+        _dbContext.UnitOfMeasures.Add(uomDb);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(long id)
+    {
+        var uomDbToBeDeleted = new DBContext.Models.Inventory.UnitOfMeasure() { UnitOfMeasureId = id };
+        _dbContext.Remove(uomDbToBeDeleted);
+        await _dbContext.SaveChangesAsync();
     }
 }

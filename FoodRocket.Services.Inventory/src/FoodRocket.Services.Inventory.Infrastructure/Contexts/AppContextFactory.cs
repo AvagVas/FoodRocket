@@ -25,11 +25,11 @@ internal sealed class AppContextFactory : IAppContextFactory
 
             return string.IsNullOrWhiteSpace(payload)
                 ? AppContext.Empty
-                : new AppContext(JsonConvert.DeserializeObject<CorrelationContext>(payload));
+                : new AppContext(JsonConvert.DeserializeObject<CorrelationContext>(payload)!);
         }
 
         var context = _httpContextAccessor.GetCorrelationContext();
 
-        return context is null ? new AppContext(_httpContextAccessor.HttpContext) : new AppContext(context);
+        return context is null ? new AppContext(_httpContextAccessor.HttpContext!) : new AppContext(context);
     }
 }

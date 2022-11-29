@@ -1,42 +1,66 @@
+using FoodRocket.DBContext.Contexts;
 using FoodRocket.Services.Inventory.Core.Entities.Inventory;
 using FoodRocket.Services.Inventory.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoodRocket.Services.Inventory.Infrastructure.SqlServer.Inventory.Repositories;
 
 public class ProductAvailabilityRepository : IProductAvailabilityRepository
 {
-    public Task<ProductAvailability?> GetAsync(long id)
+    private readonly InventoryDbContext _dbContext;
+
+    public ProductAvailabilityRepository(InventoryDbContext dbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = dbContext;
     }
 
-    public Task<ProductAvailability?> GetAsync(long productId, long storageId)
+    public async Task<ProductAvailability?> GetAsync(long productId, long storageId)
     {
-        throw new NotImplementedException();
+        var productsInStorages = await _dbContext.ProductsInStorages
+            .Include(ps => ps.Product)
+            .Include(ps => ps.Storage)
+            .Where(ps =>
+                ps.ProductId == productId &&
+                ps.StorageId == storageId).FirstOrDefaultAsync();
+
+        var baseUnitsOfMeasureDb = await _dbContext.UnitOfMeasures.Where(uomDb => uomDb.IsBase).ToListAsync();
+        return productsInStorages?.AsEntity(baseUnitsOfMeasureDb);
     }
 
-    public Task<IEnumerable<ProductAvailability>> GetRemaindersForAllStoragesAsync(long productId)
+    public async Task<bool> ExistsAsync(long productId, long storageId)
     {
-        throw new NotImplementedException();
+        var productsInStorages = await _dbContext.ProductsInStorages
+            .AnyAsync(ps =>
+                ps.ProductId == productId &&
+                ps.StorageId == storageId);
+
+        return productsInStorages;
+    }
+    public async Task<IEnumerable<ProductAvailability>> GetRemaindersForAllStoragesAsync(long productId)
+    {
+        var productsInStorages = await _dbContext.ProductsInStorages
+            .Include(ps => ps.Product)
+            .Include(ps => ps.Storage)
+            .Where(ps =>
+                ps.ProductId == productId).ToListAsync();
+
+        var baseUnitsOfMeasureDb = await _dbContext.UnitOfMeasures.Where(uomDb => uomDb.IsBase).ToListAsync();
+        return productsInStorages?.AsEntity(baseUnitsOfMeasureDb) ?? Enumerable.Empty<ProductAvailability>();
     }
 
-    public Task<bool> ExistsAsync(long id)
+    public async Task AddAsync(ProductAvailability productAvailability)
     {
-        throw new NotImplementedException();
+        var productInStorageDb = productAvailability.AsDbModel();
+        _dbContext.ProductsInStorages.Add(productInStorageDb);
+        await _dbContext.SaveChangesAsync();
     }
 
-    public Task AddAsync(ProductAvailability productAvailability)
+    public async Task UpdateAsync(ProductAvailability productAvailability)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task UpdateAsync(ProductAvailability productAvailability)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task DeleteAsync(long id)
-    {
-        throw new NotImplementedException();
+        var productInStorageDb = productAvailability.AsDbModel();
+        var originalProductInStorageDb = await _dbContext.ProductsInStorages.FirstOrDefaultAsync(ps =>
+            ps.StorageId == productInStorageDb.StorageId && ps.ProductId == productInStorageDb.ProductId);
+        
+        _dbContext.Entry(originalProductInStorageDb!).CurrentValues.SetValues(productInStorageDb);
     }
 }

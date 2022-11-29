@@ -8,7 +8,7 @@ namespace FoodRocket.DBContext.Contexts;
 
 public class OrdersDbContextFactory : IDesignTimeDbContextFactory<OrdersDbContext>
 {
-    public OrdersDbContext CreateDbContext(string[]? args = null)
+    public OrdersDbContext CreateDbContext(string[] args = null)
     {
         var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         //var iDGeneratorOptions = builder.GetOptions<IDGeneratorConfigurationOptions>(_IDGeneratosrSectionName);

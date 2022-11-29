@@ -10,11 +10,11 @@ internal class IdentityContext : IIdentityContext
 {
     public long Id { get; }
     public int OrganizationId { get; }
-    public string UserType { get; set; }
+    public string UserType { get; set; } = "";
     public string Role { get; } = string.Empty;
     public bool IsAuthenticated { get; }
     public bool IsAdmin { get; }
-    public List<string> Permissions { get; }
+    public List<string> Permissions { get; } = new();
     [JsonIgnore]
     public IEnumerable<Claim> Claims { get; } = new List<Claim>();
 
@@ -31,20 +31,20 @@ internal class IdentityContext : IIdentityContext
     }
     internal IdentityContext(ClaimsPrincipal userClaim)
     {
-        Id = long.TryParse(userClaim.Identity.Name, out var userId) ? userId : 0;
+        Id = long.TryParse(userClaim!.Identity!.Name, out var userId) ? userId : 0;
         OrganizationId = userClaim.Claims.Where(x => x.Type == "organizationId").Select(x =>
         {
             return Convert.ToInt32(x.Value);
         }).FirstOrDefault();
 
-        UserType = userClaim.Claims.Where(x => x.Type == "userType").Select(x =>
+        UserType = userClaim!.Claims!.Where(x => x.Type == "userType").Select(x =>
         {
             return x.Value;
-        }).FirstOrDefault();
+        }).FirstOrDefault() ?? throw new InvalidOperationException();
         
-        Role = ((ClaimsIdentity)userClaim.Identity).Claims
-            .Where(c => c.Type == ClaimTypes.Role)
-            .FirstOrDefault().Value;
+        Role = ((ClaimsIdentity)userClaim!.Identity)!.Claims!
+            .FirstOrDefault(c => c.Type == ClaimTypes.Role)
+            ?.Value ?? "";
         IsAuthenticated = userClaim.Identity.IsAuthenticated;
         IsAdmin = Role.Equals("admin", StringComparison.InvariantCultureIgnoreCase);
         

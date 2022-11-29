@@ -5,7 +5,7 @@ namespace FoodRocket.Services.Inventory.Core.Repositories;
 public interface IUnitOfMeasureRepository
 {
     Task<UnitOfMeasure?> GetAsync(long id);
-    Task<IEnumerable<UnitOfMeasure>> GetListByIdsAsync(IEnumerable<long> ids);
+    Task<List<UnitOfMeasure>> GetListByIdsAsync(IEnumerable<long> ids);
 
     Task<bool> ExistsByNameOrIdAsync(string name, long id);
     Task<bool> ExistsAsync(long id);

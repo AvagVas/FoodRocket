@@ -7,7 +7,7 @@ public interface IStorageRepository
     Task<Storage?> GetAsync(long id);
     Task<bool> ExistsAsync(long id);
     Task<bool> ExistsAsync(string storageName);
-    Task AddAsync(Storage product);
-    Task UpdateAsync(Storage product);
+    Task AddAsync(Storage storage);
+    Task UpdateAsync(Storage storage);
     Task DeleteAsync(long id);
 }
