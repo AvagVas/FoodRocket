@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using FoodRocket.Services.Inventory.Core.Events;
 using FoodRocket.Services.Inventory.Core.Exceptions;
@@ -45,7 +46,8 @@ public class Product : AggregateRoot
         var foundUofM =_unitOfMeasures.FirstOrDefault(unit => unit.Id == unitOfMeasure.Id);
         if (foundUofM is {})
         {
-            throw new UnitOfMeasureCouldNotBeAddedToProductException(unitOfMeasure, this);
+            // throw new UnitOfMeasureCouldNotBeAddedToProductException(unitOfMeasure, this);
+            return;
         }
 
         if (unitOfMeasure.TypeOfUnitOfMeasure != MainUnitOfMeasure.TypeOfUnitOfMeasure)
