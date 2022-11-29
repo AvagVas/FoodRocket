@@ -52,6 +52,6 @@ public class ProductRepository : IProductRepository
     {
         DBContext.Models.Inventory.Product productDb = new DBContext.Models.Inventory.Product() { ProductId = id };
         _dbContext.Remove(productDb);
-        
+        await _dbContext.SaveChangesAsync();
     }
 }
