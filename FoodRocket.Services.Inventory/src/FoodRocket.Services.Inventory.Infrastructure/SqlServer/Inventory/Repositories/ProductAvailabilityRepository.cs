@@ -18,6 +18,8 @@ public class ProductAvailabilityRepository : IProductAvailabilityRepository
     {
         var productsInStorages = await _dbContext.ProductsInStorages
             .Include(ps => ps.Product)
+            .ThenInclude(product => product.MainUnitOfMeasure)
+            .Include(ss => ss.Product.UnitOfMeasuresLink)
             .Include(ps => ps.Storage)
             .Where(ps =>
                 ps.ProductId == productId &&

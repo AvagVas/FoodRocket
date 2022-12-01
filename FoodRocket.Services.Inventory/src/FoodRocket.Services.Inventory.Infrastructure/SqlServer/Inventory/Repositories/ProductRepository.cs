@@ -94,44 +94,47 @@ public class ProductRepository : IProductRepository
 
         List<long> neededIdsToFetch = new();
         neededIdsToFetch.AddRange(productDb.UnitOfMeasuresLink.Select(uom => uom.UnitOfMeasureId));
-        neededIdsToFetch.Add(productDb.MainUnitOfMeasure.UnitOfMeasureId);
         var originalUoMs = await _dbContext.UnitOfMeasures.Where(uom =>
             neededIdsToFetch.Contains(uom.UnitOfMeasureId)).ToListAsync();
 
-        var foundMainUnitOfMeasureOfProduct =
-            originalUoMs.FirstOrDefault(uom => uom.UnitOfMeasureId == productDb.MainUnitOfMeasure.UnitOfMeasureId);
+        List<ProductUnitOfMeasure> productsUoMToBeDeleted = originalProductDb!
+            .UnitOfMeasuresLink.Where(uom =>
+                productDb.UnitOfMeasuresLink.All(u => u.UnitOfMeasureId != uom.UnitOfMeasureId)).ToList();
 
-        if (foundMainUnitOfMeasureOfProduct is { })
+
+        List<ProductUnitOfMeasure> productsUoMToBeAdded = productDb!
+            .UnitOfMeasuresLink.Where(uom =>
+                originalProductDb.UnitOfMeasuresLink.All(u => u.UnitOfMeasureId != uom.UnitOfMeasureId)).ToList();
+
+        List<UnitOfMeasure> newUoMs = new List<UnitOfMeasure>();
+        newUoMs = productDb.UnitOfMeasuresLink
+            .Where(puom => originalUoMs.All(ouom => ouom.UnitOfMeasureId != puom.UnitOfMeasureId))
+            .Select(puom => puom.UnitOfMeasure).ToList();
+
+        if (newUoMs.Any())
         {
-            productDb.MainUnitOfMeasure = foundMainUnitOfMeasureOfProduct;
+            await _dbContext.UnitOfMeasures.AddRangeAsync(newUoMs);
         }
-        else
+
+        if (productsUoMToBeDeleted.Any())
         {
-            _dbContext.UnitOfMeasures.Add(productDb.MainUnitOfMeasure);
+            _dbContext.ProductUnitOfMeasures.RemoveRange(productsUoMToBeDeleted);
         }
 
-        foreach (var productUnitOfMeasure in productDb.UnitOfMeasuresLink.ToList())
+        foreach (var productUoMToBeAdded in productsUoMToBeAdded)
         {
-            productUnitOfMeasure.Product = originalProductDb;
-            var foundOriginalUoM =
-                originalUoMs.FirstOrDefault(uom => uom.UnitOfMeasureId == productUnitOfMeasure.UnitOfMeasureId);
-
-            if (productUnitOfMeasure.UnitOfMeasureId == productDb.MainUnitOfMeasure.UnitOfMeasureId)
+            productUoMToBeAdded.Product = originalProductDb;
+            var foundUoM =
+                await _dbContext.UnitOfMeasures.FirstOrDefaultAsync(uom => uom.UnitOfMeasureId == productUoMToBeAdded.UnitOfMeasureId);
+            if (foundUoM is null)
             {
-                productUnitOfMeasure.UnitOfMeasure = productDb.MainUnitOfMeasure;
-                continue;
+                foundUoM = newUoMs.FirstOrDefault(uom => uom.UnitOfMeasureId == productUoMToBeAdded.UnitOfMeasureId);
             }
 
-            if (foundOriginalUoM is { })
-            {
-                productUnitOfMeasure.UnitOfMeasure = foundOriginalUoM;
-            }
-            else
-            {
-                _dbContext.UnitOfMeasures.Add(productUnitOfMeasure.UnitOfMeasure);
-                _dbContext.ProductUnitOfMeasures.Add(productUnitOfMeasure);
-            }
+            productUoMToBeAdded.UnitOfMeasure = foundUoM;
         }
+
+        await _dbContext.ProductUnitOfMeasures.AddRangeAsync(productsUoMToBeAdded);
 
         _dbContext.Entry(originalProductDb!).CurrentValues.SetValues(productDb);
         await _dbContext.SaveChangesAsync();

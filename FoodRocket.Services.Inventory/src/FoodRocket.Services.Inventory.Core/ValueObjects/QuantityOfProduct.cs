@@ -27,7 +27,7 @@ public class QuantityOfProduct : IComparable<QuantityOfProduct>, IEquatable<Quan
     
     public static decimal ConvertQuantity(decimal quantity, UnitOfMeasure left, UnitOfMeasure right)
     {
-        if (left.TypeOfUnitOfMeasure == right.TypeOfUnitOfMeasure)
+        if (left.TypeOfUnitOfMeasure != right.TypeOfUnitOfMeasure)
         {
             throw new UnitOfMeasuresMismatchException(left, right);
         }
