@@ -325,19 +325,38 @@ public class BogusGenerator
 
                 return f.PickRandom(volumes);
             })
-            .RuleFor(product => product.UnitOfMeasures, f =>
+            .RuleFor(product => product.UnitOfMeasuresLink, (f, product) =>
             {
+                IEnumerable<UnitOfMeasure> uoms = Enumerable.Empty<UnitOfMeasure>();
                 if (selectedType == TypeOfUnitOfMeasure.Weight)
                 {
-                    return weights.AsEnumerable();
-                }
-
-                if (selectedType == TypeOfUnitOfMeasure.Piece)
+                    uoms = weights.AsEnumerable();
+                } else if (selectedType == TypeOfUnitOfMeasure.Piece)
                 {
-                    return pieces.AsEnumerable();
+                    uoms = pieces.AsEnumerable();
+                }
+                else
+                {
+                    uoms = volumes.AsEnumerable();
                 }
 
-                return volumes.AsEnumerable();
+                List<ProductUnitOfMeasure> productUoMs = new(); 
+                foreach (var uom in uoms)
+                {
+                    ProductUnitOfMeasure productUnitOfMeasure = new ProductUnitOfMeasure();
+                    productUnitOfMeasure.ProductId = product.ProductId;
+                    productUnitOfMeasure.Product = product;
+
+                    productUnitOfMeasure.UnitOfMeasureId = product.ProductId;
+                    productUnitOfMeasure.Product = product;
+
+                    productUnitOfMeasure.UnitOfMeasureId = uom.UnitOfMeasureId;
+                    productUnitOfMeasure.UnitOfMeasure = uom;
+
+                    productUoMs.Add(productUnitOfMeasure);
+                }
+
+                return productUoMs;
             });
 
         var products = productFaker.Generate(100);

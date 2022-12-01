@@ -10,7 +10,7 @@ public class Product : AggregateRoot
 {
 
     private List<UnitOfMeasure> _unitOfMeasures = new ();
-    public ProductName Name { get; }
+    public ProductName Name { get; private set; }
     public UnitOfMeasure MainUnitOfMeasure { get; }
 
     public IEnumerable<UnitOfMeasure> UnitOfMeasures
@@ -24,6 +24,7 @@ public class Product : AggregateRoot
         ValidateProduct(productName, mainUnitOfMeasure);
         Id = id;
         Version = version;
+        Name = productName;
         MainUnitOfMeasure = mainUnitOfMeasure;
         AddUnitOfMeasure(mainUnitOfMeasure);
     }
@@ -41,6 +42,10 @@ public class Product : AggregateRoot
         AddEvent(new ProductDeleted(this));
     }
 
+    public void ChangeName(string name)
+    {
+        Name = name;
+    }
     public void AddUnitOfMeasure(UnitOfMeasure unitOfMeasure)
     {
         var foundUofM =_unitOfMeasures.FirstOrDefault(unit => unit.Id == unitOfMeasure.Id);

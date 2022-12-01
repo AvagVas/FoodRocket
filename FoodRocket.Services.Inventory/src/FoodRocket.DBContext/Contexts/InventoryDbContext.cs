@@ -12,10 +12,14 @@ public class InventoryDbContext : DbContext
     public DbSet<Storage> Storages { get; set; }
     public DbSet<UnitOfMeasure> UnitOfMeasures { get; set; }
     public DbSet<StorageProduct> ProductsInStorages { get; set; }
+    public DbSet<ProductUnitOfMeasure> ProductUnitOfMeasures { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("inventory");
+
+        modelBuilder.Entity<ProductUnitOfMeasure>() 
+            .HasKey(x => new {x.ProductId, x.UnitOfMeasureId });
 
         modelBuilder.Entity<StorageProduct>() 
             .HasKey(x => new {x.StorageId, x.ProductId});

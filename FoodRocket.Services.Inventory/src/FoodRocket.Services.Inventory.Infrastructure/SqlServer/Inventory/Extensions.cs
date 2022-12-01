@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using FoodRocket.DBContext.Models.Customers;
+using FoodRocket.DBContext.Models.Inventory;
 using FoodRocket.Services.Inventory.Application.Exceptions;
 using FoodRocket.Services.Inventory.Core.Exceptions;
 using FoodRocket.Services.Inventory.Core.ValueObjects;
@@ -58,22 +59,15 @@ internal static class Extensions
         return listOfProductAvailabilities;
     }
 
-    public static Product AsEntity(this ProductDb productDb, IEnumerable<UnitOfMeasureDb> baseUnitOfMeasures)
-    {
-        List<UnitOfMeasureDb> listUnitOfMeasureDb = baseUnitOfMeasures.ToList();
-        var mainUnitOfMeasureDb = productDb.MainUnitOfMeasure;
-        UnitOfMeasure mainUnitOfMeasure = mainUnitOfMeasureDb.AsEntity(listUnitOfMeasureDb);
-        var product = new Product(productDb.ProductId, productDb.Name, mainUnitOfMeasure, 0);
-        if (productDb.UnitOfMeasures is { } && productDb.UnitOfMeasures.Any())
-        {
-            foreach (var unitOfMeasureDb in productDb.UnitOfMeasures)
-            {
-                product.AddUnitOfMeasure(unitOfMeasureDb.AsEntity(listUnitOfMeasureDb));
-            }
-        }
-
-        return product;
-    }
+    // public static Product AsEntity(this ProductDb productDb, IEnumerable<UnitOfMeasureDb> baseUnitOfMeasures)
+    // {
+    //     List<UnitOfMeasureDb> listUnitOfMeasureDb = baseUnitOfMeasures.ToList();
+    //     
+    //     Pro
+    //
+    //
+    //     return product;
+    // }
 
     public static List<Product> AsEntity(this IEnumerable<ProductDb> productsDb,
         IEnumerable<UnitOfMeasureDb> baseUnitOfMeasures)
@@ -139,7 +133,24 @@ internal static class Extensions
         return unitOfMeasures;
     }
 
+    public static Product AsEntity(this ProductDb productDb, IEnumerable<UnitOfMeasureDb> baseUnitOfMeasuresDb)
+    {
+ 
+        List<UnitOfMeasureDb> listBaseUnitOfMeasureDb = baseUnitOfMeasuresDb.ToList();
+
+        Product product = new Product(productDb.ProductId, productDb.Name, productDb.MainUnitOfMeasure.AsEntity(listBaseUnitOfMeasureDb), 0);
+
+        foreach (var productUnitOfMeasureDb in productDb.UnitOfMeasuresLink)
+        {
+            product.AddUnitOfMeasure(productUnitOfMeasureDb.UnitOfMeasure.AsEntity(listBaseUnitOfMeasureDb));
+        }
+
+
+        return product;
+    }
+
     // As Db Models
+
     public static ProductDb AsDbModel(this Product product)
     {
         UnitOfMeasureDb mainUnitOfMeasureDb = product.MainUnitOfMeasure.AsDbModel();
@@ -148,7 +159,19 @@ internal static class Extensions
         productDb.Name = product.Name;
         productDb.MainUnitOfMeasure = mainUnitOfMeasureDb;
         var listOfUnitOfMeasureDbs = product.UnitOfMeasures.AsDbModel();
-        productDb.UnitOfMeasures = listOfUnitOfMeasureDbs;
+        
+        List<ProductUnitOfMeasure> productUnitOfMeasures = new();
+        foreach (var unitOfMeasureDb in listOfUnitOfMeasureDbs)
+        {
+            ProductUnitOfMeasure productUnitOfMeasure = new();
+            productUnitOfMeasure.ProductId = product.Id;
+            productUnitOfMeasure.Product = productDb;
+            productUnitOfMeasure.UnitOfMeasureId = unitOfMeasureDb.UnitOfMeasureId;
+            productUnitOfMeasure.UnitOfMeasure = unitOfMeasureDb;
+            productUnitOfMeasures.Add(productUnitOfMeasure);
+        }
+
+        productDb.UnitOfMeasuresLink = productUnitOfMeasures;
 
         return productDb;
     }

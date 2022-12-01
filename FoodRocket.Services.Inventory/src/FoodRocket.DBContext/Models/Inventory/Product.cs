@@ -14,5 +14,5 @@ public class Product
     
     public UnitOfMeasure MainUnitOfMeasure { get; set; }
 
-    public ICollection<UnitOfMeasure> UnitOfMeasures;
+    public ICollection<ProductUnitOfMeasure> UnitOfMeasuresLink { get; set; }
 }

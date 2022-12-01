@@ -18,7 +18,8 @@ public class InventoryDbContextFactory : IDesignTimeDbContextFactory<InventoryDb
             // Uncomment the following line if you want to print generated
             // SQL statements on the console.
             .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
-            .UseSqlServer(configuration["SqlServer:ConnectionString"]);
+            .UseSqlServer(configuration["SqlServer:ConnectionString"])
+            .EnableSensitiveDataLogging();
 
         return new InventoryDbContext(optionsBuilder.Options);
     }

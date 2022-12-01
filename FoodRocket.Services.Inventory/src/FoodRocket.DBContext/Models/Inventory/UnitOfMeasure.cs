@@ -20,4 +20,6 @@ public class UnitOfMeasure
     
     [AllowNull]
     public long? BaseOfUnitOfMId { get; set; }
+
+    public ICollection<ProductUnitOfMeasure> ProductsLink { get; set; }
 }
