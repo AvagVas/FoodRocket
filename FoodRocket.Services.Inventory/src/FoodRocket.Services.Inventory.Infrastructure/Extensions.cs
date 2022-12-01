@@ -185,17 +185,29 @@ namespace FoodRocket.Services.Inventory.Infrastructure
             #endregion
 
             var options = configuration.GetOptions<SqlServerOptions>("SqlServer");
-            builder.Services.AddDbContext<InventoryDbContext>(ctx => 
-                ctx.UseSqlServer(options.ConnectionString));
+            builder.Services.AddDbContext<InventoryDbContext>(ctx =>
+            {
+                ctx.UseSqlServer(options.ConnectionString);
+                ctx.EnableSensitiveDataLogging();
+            });
 
             builder.Services.AddDbContext<CustomersDbContext>(ctx => 
-                ctx.UseSqlServer(options.ConnectionString));
+            {
+                ctx.UseSqlServer(options.ConnectionString);
+                ctx.EnableSensitiveDataLogging();
+            });
 
             builder.Services.AddDbContext<OrdersDbContext>(ctx => 
-                ctx.UseSqlServer(options.ConnectionString));
+            {
+                ctx.UseSqlServer(options.ConnectionString);
+                ctx.EnableSensitiveDataLogging();
+            });
             
             builder.Services.AddDbContext<StaffDbContext>(ctx => 
-                ctx.UseSqlServer(options.ConnectionString));
+            {
+                ctx.UseSqlServer(options.ConnectionString);
+                ctx.EnableSensitiveDataLogging();
+            });
 
 
             return builder;

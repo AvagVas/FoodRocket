@@ -53,6 +53,12 @@ public class ProductAvailabilityRepository : IProductAvailabilityRepository
     public async Task AddAsync(ProductAvailability productAvailability)
     {
         var productInStorageDb = productAvailability.AsDbModel();
+        var originalProduct = await _dbContext.Products.FirstAsync(pr => pr.ProductId == productInStorageDb.ProductId);
+        var originalStorage = await _dbContext.Storages.FirstAsync(s => s.StorageId == productInStorageDb.StorageId);
+        var originalUoM = await _dbContext.UnitOfMeasures.FirstAsync(s => s.UnitOfMeasureId == productInStorageDb.UnitOfMeasure.UnitOfMeasureId);
+        productInStorageDb.Product = originalProduct;
+        productInStorageDb.Storage = originalStorage;
+        productInStorageDb.UnitOfMeasure = originalUoM;
         _dbContext.ProductsInStorages.Add(productInStorageDb);
         await _dbContext.SaveChangesAsync();
     }
@@ -62,7 +68,15 @@ public class ProductAvailabilityRepository : IProductAvailabilityRepository
         var productInStorageDb = productAvailability.AsDbModel();
         var originalProductInStorageDb = await _dbContext.ProductsInStorages.FirstOrDefaultAsync(ps =>
             ps.StorageId == productInStorageDb.StorageId && ps.ProductId == productInStorageDb.ProductId);
+        var originalUoM = await _dbContext.UnitOfMeasures.FirstAsync(s => s.UnitOfMeasureId == productInStorageDb.UnitOfMeasure.UnitOfMeasureId);
+        _dbContext.ProductsInStorages.Remove(originalProductInStorageDb!);
+
+        productInStorageDb.Product = originalProductInStorageDb!.Product;
+        productInStorageDb.Storage = originalProductInStorageDb!.Storage;
+        productInStorageDb.UnitOfMeasure = originalUoM;
         
-        _dbContext.Entry(originalProductInStorageDb!).CurrentValues.SetValues(productInStorageDb);
+        await _dbContext.ProductsInStorages.AddAsync(productInStorageDb);
+        //_dbContext.Entry(originalProductInStorageDb!).CurrentValues.SetValues(productInStorageDb);
+        await _dbContext.SaveChangesAsync();
     }
 }
