@@ -41,7 +41,9 @@ public class StorageRepository : IStorageRepository
     public async Task UpdateAsync(Storage storage)
     {
         DBContext.Models.Inventory.Storage storageDb = storage.AsDbModel();
-        _dbContext.Storages.Update(storageDb);
+        var originalStorage = await _dbContext.Storages.FirstAsync(s => s.StorageId == storageDb.StorageId);
+        _dbContext.Entry(originalStorage).CurrentValues.SetValues(storageDb);
+        
         await _dbContext.SaveChangesAsync();
     }
 
