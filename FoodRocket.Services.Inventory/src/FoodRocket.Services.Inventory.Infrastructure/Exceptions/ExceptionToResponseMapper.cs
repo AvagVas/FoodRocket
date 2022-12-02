@@ -17,6 +17,8 @@ namespace FoodRocket.Services.Inventory.Infrastructure.Exceptions
             {
                 DomainException ex => new ExceptionResponse(new {code = GetCode(ex), reason = ex.Message},
                     HttpStatusCode.BadRequest),
+                ProductNotFoundException ex => new ExceptionResponse(new {code = GetCode(ex), reason = ex.Message},
+                HttpStatusCode.NotFound),
                 AppException ex => new ExceptionResponse(new {code = GetCode(ex), reason = ex.Message},
                     HttpStatusCode.BadRequest),
                 _ => new ExceptionResponse(new {code = "error", reason = "There was an error."},

@@ -27,23 +27,27 @@ public class InventoryController : ControllerBase
     private readonly IQueryDispatcher _queryDispatcher;
     private readonly ICommandDispatcher _commandDispatcher;
     private readonly IAppContext _appContext;
+    private readonly INewIdGenerator _idGenerator;
 
     public InventoryController(IQueryDispatcher queryDispatcher,
-         ICommandDispatcher commandDispatcher, IAppContext appContext)
+         ICommandDispatcher commandDispatcher, IAppContext appContext, INewIdGenerator idGenerator)
     {
         _queryDispatcher = queryDispatcher;
         _commandDispatcher = commandDispatcher;
         _appContext = appContext;
+        _idGenerator = idGenerator;
     }
 
     [HttpPost("products")]
     public async Task<IActionResult> AddProduct([FromBody] AddProduct command)
     {
+        command.ProductId = _idGenerator.GetNewIdFor("product");
         await _commandDispatcher.SendAsync(command);
-        return Created("products/", null);
+        return Created($"api/inventory/{command.ProductId}", null);
     }
 
-    [HttpDelete("products")] public async Task<IActionResult> DeleteProduct([FromBody] DeleteProduct command)
+    [HttpDelete("{ProductId}")]
+    public async Task<IActionResult> DeleteProduct([FromRoute] DeleteProduct command)
     {
         await _commandDispatcher.SendAsync(command);
         return Ok();
@@ -85,14 +89,19 @@ public class InventoryController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("{productId}")]
+    [HttpGet("{ProductId}")]
     public async Task<IActionResult> GetProduct([FromRoute] GetProduct query)
     {
         var product = await _queryDispatcher.QueryAsync(query);
+        if (product is null)
+        {
+            return NotFound();
+        }
+
         return Ok(product);
     }
     
-    [HttpGet("products/detailed/pagenated")]
+    [HttpGet("products/detailed/paginated")]
     public async Task<IActionResult> GetProductDetailedPaginatedList([FromQuery] GetProductDetailsListPaginated query)
     {
         var productsDetailed = await _queryDispatcher.QueryAsync(query);

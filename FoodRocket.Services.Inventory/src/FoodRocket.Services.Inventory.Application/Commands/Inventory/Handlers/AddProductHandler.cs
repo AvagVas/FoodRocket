@@ -71,12 +71,12 @@ public class AddProductHandler : ICommandHandler<AddProduct>
 
     public async Task Validate(AddProduct command)
     {
-        if (!await _repository.ExistsAsync(command.ProductId))
+        if (await _repository.ExistsAsync(command.ProductId))
         {
             throw new ProductAlreadyExistsException(command.ProductId);
         }
 
-        if (!await _repository.ExistsAsync(command.ProductName))
+        if (await _repository.ExistsAsync(command.ProductName))
         {
             throw new ProductAlreadyExistsException(command.ProductId);
         }

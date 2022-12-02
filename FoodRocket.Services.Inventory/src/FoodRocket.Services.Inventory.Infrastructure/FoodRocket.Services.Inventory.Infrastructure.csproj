@@ -50,7 +50,6 @@
       <Folder Include="Mongo\Queries" />
       <Folder Include="Mongo\Repositories" />
       <Folder Include="SqlServer\Customers\Queries" />
-      <Folder Include="SqlServer\Inventory\Queries" />
       <Folder Include="Tests" />
     </ItemGroup>
 </Project>

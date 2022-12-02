@@ -30,6 +30,7 @@ public class DeleteProductHandler : ICommandHandler<DeleteProduct>
             throw new ProductNotFoundException(command.ProductId);
         }
 
+        await _repository.DeleteAsync(product.Id);
         //TODO: add some policies to prevent deletion
         product.Delete();
         await _eventProcessor.ProcessAsync(product!.Events);

@@ -36,7 +36,7 @@ public class ProductRepository : IProductRepository
 
     public async Task<bool> ExistsAsync(ProductName name)
     {
-        return await _dbContext.Products.AnyAsync(p => p.Name == name);
+        return await _dbContext.Products.AnyAsync(p => p.Name == name.ToString());
     }
 
     public async Task AddAsync(Product product)
@@ -143,7 +143,7 @@ public class ProductRepository : IProductRepository
     public async Task DeleteAsync(AggregateId id)
     {
         DBContext.Models.Inventory.Product productDb = new DBContext.Models.Inventory.Product() { ProductId = id };
-        _dbContext.Remove(productDb);
-        await _dbContext.SaveChangesAsync();
+        var result = await  _dbContext.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM inventory.Products WHERE ProductId = {id.Value}");
+        
     }
 }

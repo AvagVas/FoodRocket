@@ -80,7 +80,10 @@ public class Program
             .Configure(app =>
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.ConfigObject.AdditionalItems.Add("persistAuthorization","true");
+                });
                 app.UseInfrastructure();
                 app.UseAllRoutes();
             })
